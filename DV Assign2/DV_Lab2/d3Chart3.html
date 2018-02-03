@@ -37,12 +37,14 @@
     padding: 14px;
     text-align: center;
   }
+  svg{
+    margin-top: 50px;
+  }
+
   #svg1{
-    display:block;
     float:right;
   }
   #svg2{
-    display:block;
     float:left;
   }
 
@@ -51,6 +53,30 @@
   left: 45%;
   width: 150px;
   height: 40px;
+}
+
+#winner{
+  display:block;
+  float:left;
+  margin-left: 200px;
+}
+
+#loser{
+  display:block;
+  float:right;
+  margin-right:200px;
+  clear:right;
+}
+
+.image{
+  width:200px;
+  height:200px;
+  background-color: red;
+}
+
+.svg{
+  display:block;
+  clear:both;
 }
 
 
@@ -71,10 +97,30 @@
   <option value="2011">2013</option>
   <option value="2012">2014</option>
 </select>
-<svg id='svg1' width="500" height="500"></svg>
+<div id='winner' class='block'>
+<h3>Winner</h3>
+<div id='winnerImage' class='image'></div>
+</div>
+
+<div id='loser' class='block'>
+<h3>Loser</h3>
+<div id='loserImage' class='image'></div>
+</div>
+<div class='svg'>
 <svg id='svg2' width="500" height="500"></svg>
+<svg id='svg1' width="500" height="500"></svg>
+</div>
 <script src="https://d3js.org/d3.v4.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script>
+
+$( "#yearSelect" ).change(function() {
+  alert( "Handler for .change() called." );
+    $("#loserImage").css('background-image',"url('./img/Federer.jpeg')");
+    $("#winnerImage").css('background-image',"url('./img/Nadal.jpeg')");
+
+});
+
 var svg = d3.select("#svg1"),
     margin = {top: 20, right: 20, bottom: 30, left: 80},
     width = +svg.attr("width") - margin.left - margin.right,
