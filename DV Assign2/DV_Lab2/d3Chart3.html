@@ -1,45 +1,78 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<style>
-body {
-  margin: 15px;
-  background-color: #F1F3F3
-}
-.bar {
-	fill: #6F257F;
-}
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #D4D8DA;
-  stroke-width: 1px;
-  shape-rendering: crispEdges;
-}
-.x path {
-	display: none;
-}
-.toolTip {
-	position: absolute;
-  display: none;
-  min-width: 80px;
-  height: auto;
-  background: none repeat scroll 0 0 #ffffff;
-  border: 1px solid #6F257F;
-  padding: 14px;
-  text-align: center;
-}
-#svg1{
-  display:block;
-  float:right;
-}
-#svg2{
-  display:block;
-  float:left;
+<head>
+  <style>
+  body {
+    margin: 15px;
+    background-color: #F1F3F3;
+  }
+  h1{
+    text-align: center;
+  }
+
+  .bar {
+  	fill: rgb(245, 138, 50);
+  }
+  .bar2 {
+    fill: rgb(19, 249, 111);
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #D4D8DA;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+  }
+  .x path {
+  	display: none;
+  }
+  .toolTip {
+  	position: absolute;
+    display: none;
+    min-width: 80px;
+    height: auto;
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #6F257F;
+    padding: 14px;
+    text-align: center;
+  }
+  #svg1{
+    display:block;
+    float:right;
+  }
+  #svg2{
+    display:block;
+    float:left;
+  }
+
+#yearSelect{
+  position: absolute;
+  left: 45%;
+  width: 150px;
+  height: 40px;
 }
 
+
 </style>
-<svg id='svg1' width="700" height="500"></svg>
-<svg id='svg2' width="700" height="500"></svg>
+</head>
+<body>
+<h1>US Male Open Matches from 2004-2014</h1>
+<select id='yearSelect'>
+  <option value="2004">2004</option>
+  <option value="2005">2005</option>
+  <option value="2006">2006</option>
+  <option value="2007">2007</option>
+  <option value="2008">2008</option>
+  <option value="2009">2009</option>
+  <option value="2010">2010</option>
+  <option value="2011">2011</option>
+  <option value="2012">2012</option>
+  <option value="2011">2013</option>
+  <option value="2012">2014</option>
+</select>
+<svg id='svg1' width="500" height="500"></svg>
+<svg id='svg2' width="500" height="500"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 var svg = d3.select("#svg1"),
@@ -67,11 +100,6 @@ d3.csv("data.csv", function(error, data) {
   	x.domain([0, d3.max(data, function(d) { return d.Score; })]);
     y.domain(data.map(function(d) { return d.Name; })).padding(0.1);
 
-  /*  g.append("g")
-        .attr("class", "x axis")
-       	.attr("transform", "translate(0," + height + ")")
-      	.call(d3.axisBottom(x).ticks(5).tickFormat(function(d) { return parseInt(d / 1000); }).tickSizeInner([-height]));
-*/
     g2.append("g")
         .attr("class", "y axis")
         .call(d3.axisLeft(y));
@@ -114,3 +142,5 @@ d3.csv("data.csv", function(error, data) {
 
 });
 </script>
+</body>
+</html>
