@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1517278360300.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "225034097",
+    "id" : "1BA2319F",
+    "lastKnownWriteTime" : 1517280832,
+    "last_content_update" : 1517280832800,
+    "path" : "~/Desktop/DV_Assign1/DV_Assignment1/Trial.R",
+    "project_path" : "Trial.R",
+    "properties" : {
+        "cursorPosition" : "2,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,77 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/lab2.css">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="js/lab2.js"></script>
+</head>
+<body>
+ I love Data Visualization!
+<div id="viz"></div>
+<div id='smiley'></div>
+ <!--svg >
+   <line x1="50" y1="50" x2="100" y2="100" stroke-width="10" stroke="red" />
+   <line x1="100" y1="100" x2="200" y2="0" stroke-width="10" stroke="black" />
+</svg-->
+<script type="text/javascript">
+
+  var peppers = [   {"x":10,"y":100,"width": 100,"height":40, "color":'red'},
+                    {"x":120,y:100,"width": 100,"height":40, "color":'blue'},
+                    {"x":240,y:100,"width": 100,"height":40, "color":'yellow'},
+                    {"x":360,y:100,"width": 100,"height":40, "color":'green'} ];
+  var svgCircle = d3.select("#viz")
+ .append("svg")
+ .attr("width", 600)
+ .attr("height", 300);
+
+ svgCircle.selectAll("rects")
+ .data(peppers)
+ .enter()
+ .append('rect')
+ .attr('width',function(d){return d.width;})
+ .attr('height',function(d){return d.height;})
+ .attr('fill',function(d){return d.color;})
+ .attr('x',function(d){return d.x;})
+ .attr('y',function(d){return d.y;});
+
+
+ /*trying to draw smiley face*/
+ var svgSmiley = d3.select("#smiley")
+ .append("svg")
+ .attr("width", 800)
+ .attr("height", 500);
+
+ var Circle= svgSmiley
+ .append('circle')
+ .attr('cx',180)
+ .attr('cy',70)
+ .attr('r',55)
+ .attr('fill','#ed2b9f');
+
+var ellipseData=[{'x':160,'y':60,},{'x':200,'y':60}];
+var lineData=[{"x":160,"y":100},{"x":180,"y":115},{"x":200,"y":100}];
+//eyes
+svgSmiley.selectAll('ellipseGrp')
+.data(ellipseData)
+.enter()
+.append('ellipse')
+.attr('rx',10)
+.attr('ry',15)
+.attr('cx', function(d){return d.x})
+.attr('cy', function(d){return d.y});
+
+//smile curve
+
+var lineFunction= d3.svg.line().x(function(d){return d.x}).y(function(d){return d.y}).interpolate('basis');
+
+svgSmiley
+.append('path')
+.attr('d', lineFunction(lineData))
+.attr('stroke-width',1)
+.attr('stroke','black')
+.attr('fill',"none");
+
+
+
+</script>
+</body>
+</html >
