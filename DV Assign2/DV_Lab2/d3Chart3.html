@@ -43,9 +43,11 @@
 
   #svg1{
     float:right;
+    margin-right: 30px;
   }
   #svg2{
     float:left;
+    margin-left: 30px;
   }
 
 #yearSelect{
@@ -69,7 +71,7 @@
 #loser{
   display:block;
   float:right;
-  margin-right:200px;
+  margin-right:250px;
   clear:right;
 }
 
@@ -291,7 +293,7 @@ function drawChartUsingData(year){
 
       g2.append("g")
           .attr("class", "y axis")
-          .attr("transform", "translate( " + (width-20) + ", 0 )")
+          .attr("transform", "translate( " + (width-60) + ", 0 )")
           .call(d3.axisRight(y));
 
       var bar=g.selectAll(".bargroup1")
@@ -321,7 +323,7 @@ function drawChartUsingData(year){
           .enter()
           .append("rect")
           .attr("class", "bar2")
-          .attr("x", function(d){return width-40 - x2(d.value)})
+          .attr("x", function(d){return width-80 - x2(d.value)})
           .attr("height", y.bandwidth())
           .attr("y", function(d) { return y(d.key); })
           .attr("width", function(d) { console.log("score of "+d.key+" "+x2(d.value));return x2(d.value); });
