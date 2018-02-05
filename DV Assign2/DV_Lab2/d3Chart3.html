@@ -291,9 +291,10 @@ function drawChartUsingData(year){
 
       g2.append("g")
           .attr("class", "y axis")
-          .call(d3.axisLeft(y2));
+          .attr("transform", "translate( " + (width-20) + ", 0 )")
+          .call(d3.axisRight(y));
 
-      g.selectAll(".bar")
+      var bar=g.selectAll(".bargroup1")
           .data(jsonObj.player1.stat)
           .enter()
           .append("rect")
@@ -301,8 +302,9 @@ function drawChartUsingData(year){
           .attr("x", 20)
           .attr("height", y.bandwidth())
           .attr("y", function(d) { return y(d.key); })
-          .attr("width", function(d) { console.log("score of "+d.key+" "+x(d.value));return x(d.value); })
-          .on("mousemove", function(d){
+          .attr("width", function(d) { console.log("score of "+d.key+" "+x(d.value));return x(d.value); });
+
+          bar.on("mousemove", function(d){
               tooltip
                 .style("left", d3.event.pageX - 50 + "px")
                 .style("top", d3.event.pageY - 70 + "px")
@@ -311,16 +313,23 @@ function drawChartUsingData(year){
           })
       		.on("mouseout", function(d){ tooltip.style("display", "none");});
 
-          g2.selectAll(".bar2")
+
+
+
+          var bar2=g2.selectAll(".bargroup2")
           .data(jsonObj.player2.stat)
           .enter()
           .append("rect")
           .attr("class", "bar2")
-          .attr("x", function(d){return width - x2(d.value)})
+          .attr("x", function(d){return width-40 - x2(d.value)})
           .attr("height", y.bandwidth())
           .attr("y", function(d) { return y(d.key); })
-          .attr("width", function(d) { console.log("score of "+d.key+" "+x2(d.value));return x2(d.value); })
-          .on("mousemove", function(d){
+          .attr("width", function(d) { console.log("score of "+d.key+" "+x2(d.value));return x2(d.value); });
+
+
+
+
+          bar2.on("mousemove", function(d){
               tooltip
                 .style("left", d3.event.pageX - 50 + "px")
                 .style("top", d3.event.pageY - 70 + "px")
@@ -328,6 +337,12 @@ function drawChartUsingData(year){
                 .html((d.key) + "<br>" + (d.value));
           })
           .on("mouseout", function(d){ tooltip.style("display", "none");});
+
+          bar2.transition().delay(function(d,i){ return i * 200; });
+
+
+
+
 
   });
 }
