@@ -114,77 +114,221 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script>
 
-$( "#yearSelect" ).change(function() {
-  alert( "Handler for .change() called." );
-    $("#loserImage").css('background-image',"url('./img/Federer.jpeg')");
-    $("#winnerImage").css('background-image',"url('./img/Nadal.jpeg')");
+$(document).ready(function() {
 
-});
-
-var svg = d3.select("#svg1"),
-    margin = {top: 20, right: 20, bottom: 30, left: 80},
-    width = +svg.attr("width") - margin.left - margin.right,
-    height = +svg.attr("height") - margin.top - margin.bottom;
-
-var svg2 = d3.select("#svg2");
+  console.log('Console ready!');
+  $( "#yearSelect" ).change(function() {
+      $("#loserImage").css('background-image',"url('./img/Federer.jpeg')");
+      $("#winnerImage").css('background-image',"url('./img/Nadal.jpeg')");
+      d3.selectAll('svg').selectAll("*").remove();
+      drawChartUsingData($('#yearSelect option:selected').text());
+  });
 
 
-var tooltip = d3.select("body").append("div").attr("class", "toolTip");
-var x = d3.scaleLinear().range([0,width]);
-var y = d3.scaleBand().range([height,0]);
-
-var g = svg.append("g")
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-var g2 = svg2.append("g")
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-    .attr("x",500);
 
 
-d3.csv("data.csv", function(error, data) {
-  	//data.sort(function(a, b) { return a.Score - b.Score; });
-  	x.domain([0, d3.max(data, function(d) { return d.Score; })]);
-    y.domain(data.map(function(d) { return d.Name; })).padding(0.1);
 
-    g2.append("g")
-        .attr("class", "y axis")
-        .call(d3.axisLeft(y));
+function drawChartUsingData(year){
 
-    g.selectAll(".bar")
-        .data(data)
-        .enter()
-        .append("rect")
-        .attr("class", "bar")
-        .attr("x", 30)
-        .attr("height", y.bandwidth())
-        .attr("y", function(d) { return y(d.Name); })
-        .attr("width", function(d) { console.log("score of "+d.Name+" "+x(d.Score));return x(d.Score); })
-        .on("mousemove", function(d){
-            tooltip
-              .style("left", d3.event.pageX - 50 + "px")
-              .style("top", d3.event.pageY - 70 + "px")
-              .style("display", "inline-block")
-              .html((d.Name) + "<br>" + (d.Score));
-        })
-    		.on("mouseout", function(d){ tooltip.style("display", "none");});
+  var svg = d3.select("#svg1"),
+      margin = {top: 20, right: 20, bottom: 30, left: 80},
+      width = +svg.attr("width") - margin.left - margin.right,
+      height = +svg.attr("height") - margin.top - margin.bottom;
 
-        g2.selectAll(".bar2")
-          .data(data)
+  var svg2 = d3.select("#svg2");
+
+
+  var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
+
+
+  var g = svg.append("g")
+  		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var g2 = svg2.append("g")
+  		.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .attr("x",500);
+
+  console.log("The year is "+year);
+  d3.csv("NeededData.csv", function(error, data) {
+    	//Create jsonObject from data
+
+      var jsonObj={}, player1={},player2={}, stat1={}, stat2={};
+      for(var i=0;i<data.length;i++){
+
+          if(data[i].year===year){
+              console.log('Found');
+              jsonObj['year']=year;
+              player1['name']=data[i].player1;
+              player2['name']=data[i].player2;
+              // stat1['ace']=data[i].ace1;
+              // stat2['ace']=data[i].ace2;
+              // stat1['double']=data[i].double1;
+              // stat2['double']=data[i].double2;
+              // stat1['firstPointWon']=data[i].firstPointWon1;
+              // stat2['firstPointWon']=data[i].firstPointWon2;
+              // stat1['secPointWon']=data[i].secPointWon1;
+              // stat2['secPointWon']=data[i].secPointWon2;
+              // stat1['break']=data[i].break1;
+              // stat2['break']=data[i].break2;
+              // stat1['return']=data[i].return1;
+              // stat2['return']=data[i].return2;
+              // stat1['total']=data[i].total1;
+              // stat2['total']=data[i].total2;
+              // stat1['winner']=data[i].winner1;
+              // stat2['winner']=data[i].winner2;
+              // stat1['error']=data[i].error1;
+              // stat2['error']=data[i].error2;
+              // stat1['net1']=data[i].net1;
+              // stat2['net2']=data[i].net2;
+
+              stat1 = [
+                {
+                  "key"   : "Ace",
+                  "value" : +data[i].ace1
+                },
+                {
+                  "key" : "Double",
+                  "value" : +data[i].double1
+                },
+                {
+                  "key" : "Winner",
+                  "value" : +data[i].winner1
+                },
+                {
+                  "key" : "Error",
+                  "value" : +data[i].error1
+                },
+                {
+                  "key" : "First Serve",
+                  "value" : +parseFloat(data[i].firstServe1)
+                },
+                {
+                  "key" : "First Point Won",
+                  "value" : +parseFloat(data[i].firstPointWon1)
+                },
+                {
+                  "key" : "Break",
+                  "value" : +parseFloat(data[i].break1)
+                },
+                {
+                  "key" : "Return",
+                  "value" : +parseFloat(data[i].return1)
+                },
+                {
+                  "key" : "Net",
+                  "value" : +parseFloat(data[i].net1)
+                }
+              ];
+              stat2 = [
+                {
+                  "key"   : "Ace",
+                  "value" : +data[i].ace2
+                },
+                {
+                  "key" : "Double",
+                  "value" : +data[i].double2
+                },
+                {
+                  "key" : "Winner",
+                  "value" : +data[i].winner2
+                },
+                {
+                  "key" : "Error",
+                  "value" : +data[i].error2
+                },
+                {
+                  "key" : "First Serve",
+                  "value" : +parseFloat(data[i].firstServe2)
+                },
+                {
+                  "key" : "First Point Won",
+                  "value" : +parseFloat(data[i].firstPointWon2)
+                },
+                {
+                  "key" : "Break",
+                  "value" : +parseFloat(data[i].break2)
+                },
+                {
+                  "key" : "Return",
+                  "value" : +parseFloat(data[i].return2)
+                },
+                {
+                  "key" : "Net",
+                  "value" : +parseFloat(data[i].net2)
+                }
+              ];
+              player1['stat']=stat1;
+              player2['stat']=stat2;
+              jsonObj['player1']=player1;
+              jsonObj['player2']=player2;
+
+              break;
+          }
+
+      }
+      console.log('See the json object below');
+      console.log(jsonObj);
+
+      var x = d3.scaleLinear().domain(jsonObj.player1.stat.map(obj => {return obj.value})).range([0,width]);
+      var x2 = d3.scaleLinear().domain(jsonObj.player2.stat.map(obj => {return obj.value})).range([0,width]);
+
+      var keys = jsonObj.player1.stat.map(obj => {return obj.key});
+      var y = d3.scaleBand().domain(keys).range([height,0]).padding(0.1);;
+      var y2 = d3.scaleBand().domain(keys).range([height,0]).padding(0.1);;
+
+    	x.domain([0, 100]);
+      x2.domain([0, 100]);
+
+      // y2.domain(data.map(function(d) { return Object.keys(jsonObj.player2.stat); })).padding(0.1);
+
+      g.append("g")
+          .attr("class", "y axis")
+          .call(d3.axisLeft(y));
+
+      g2.append("g")
+          .attr("class", "y axis")
+          .call(d3.axisLeft(y2));
+
+      g.selectAll(".bar")
+          .data(jsonObj.player1.stat)
           .enter()
           .append("rect")
-            .attr("class", "bar2")
-            .attr("x", function(d) { return width-x(d.Score); })
-            .attr("height", y.bandwidth())
-            .attr("y", function(d) { return y(d.Name); })
-            .attr("width", function(d) { return x(d.Score); })
-            .on("mousemove", function(d){
-                tooltip
-                  .style("left", d3.event.pageX - 50 + "px")
-                  .style("top", d3.event.pageY - 70 + "px")
-                  .style("display", "inline-block")
-                  .html((d.Name) + "<br>" + (d.Score));
-            })
-        		.on("mouseout", function(d){ tooltip.style("display", "none");});
+          .attr("class", "bar")
+          .attr("x", 20)
+          .attr("height", y.bandwidth())
+          .attr("y", function(d) { return y(d.key); })
+          .attr("width", function(d) { console.log("score of "+d.key+" "+x(d.value));return x(d.value); })
+          .on("mousemove", function(d){
+              tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html((d.key) + "<br>" + (d.value));
+          })
+      		.on("mouseout", function(d){ tooltip.style("display", "none");});
+
+          g2.selectAll(".bar2")
+          .data(jsonObj.player2.stat)
+          .enter()
+          .append("rect")
+          .attr("class", "bar2")
+          .attr("x", function(d){return width - x2(d.value)})
+          .attr("height", y.bandwidth())
+          .attr("y", function(d) { return y(d.key); })
+          .attr("width", function(d) { console.log("score of "+d.key+" "+x2(d.value));return x2(d.value); })
+          .on("mousemove", function(d){
+              tooltip
+                .style("left", d3.event.pageX - 50 + "px")
+                .style("top", d3.event.pageY - 70 + "px")
+                .style("display", "inline-block")
+                .html((d.key) + "<br>" + (d.value));
+          })
+          .on("mouseout", function(d){ tooltip.style("display", "none");});
+
+  });
+}
+
 
 });
 </script>
