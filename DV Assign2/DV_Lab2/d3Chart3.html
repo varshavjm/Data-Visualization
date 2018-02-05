@@ -71,13 +71,15 @@
 .image{
   width:200px;
   height:200px;
-  background-color: red;
+  background-color: white;
 }
 
 .svg{
   display:block;
   clear:both;
 }
+
+
 
 
 </style>
@@ -98,12 +100,12 @@
   <option value="2012">2014</option>
 </select>
 <div id='winner' class='block'>
-<h3>Winner</h3>
+<h3 style='color:red;'>Winner</h3>
 <div id='winnerImage' class='image'></div>
 </div>
 
 <div id='loser' class='block'>
-<h3>Loser</h3>
+<h3 style='color:green;'>Loser</h3>
 <div id='loserImage' class='image'></div>
 </div>
 <div class='svg'>
@@ -118,15 +120,10 @@ $(document).ready(function() {
 
   console.log('Console ready!');
   $( "#yearSelect" ).change(function() {
-      $("#loserImage").css('background-image',"url('./img/Federer.jpeg')");
-      $("#winnerImage").css('background-image',"url('./img/Nadal.jpeg')");
+
       d3.selectAll('svg').selectAll("*").remove();
       drawChartUsingData($('#yearSelect option:selected').text());
   });
-
-
-
-
 
 function drawChartUsingData(year){
 
@@ -160,27 +157,10 @@ function drawChartUsingData(year){
               console.log('Found');
               jsonObj['year']=year;
               player1['name']=data[i].player1;
+              player1['ID1']=data[i].ID1;
               player2['name']=data[i].player2;
-              // stat1['ace']=data[i].ace1;
-              // stat2['ace']=data[i].ace2;
-              // stat1['double']=data[i].double1;
-              // stat2['double']=data[i].double2;
-              // stat1['firstPointWon']=data[i].firstPointWon1;
-              // stat2['firstPointWon']=data[i].firstPointWon2;
-              // stat1['secPointWon']=data[i].secPointWon1;
-              // stat2['secPointWon']=data[i].secPointWon2;
-              // stat1['break']=data[i].break1;
-              // stat2['break']=data[i].break2;
-              // stat1['return']=data[i].return1;
-              // stat2['return']=data[i].return2;
-              // stat1['total']=data[i].total1;
-              // stat2['total']=data[i].total2;
-              // stat1['winner']=data[i].winner1;
-              // stat2['winner']=data[i].winner2;
-              // stat1['error']=data[i].error1;
-              // stat2['error']=data[i].error2;
-              // stat1['net1']=data[i].net1;
-              // stat2['net2']=data[i].net2;
+              player2['ID2']=data[i].ID2;
+
 
               stat1 = [
                 {
@@ -267,15 +247,23 @@ function drawChartUsingData(year){
           }
 
       }
+
       console.log('See the json object below');
       console.log(jsonObj);
+
+      $("#loserImage").css('background-image',"url('./img/"+jsonObj['player2']['ID2']+"')");
+      $("#loserImage").css('background-repeat',"no-repeat");
+      $("#winnerImage").css('background-image',"url('./img/"+jsonObj['player1']['ID1']+"')");
+      $("#winnerImage").css('background-repeat',"no-repeat");
+
 
       var x = d3.scaleLinear().domain(jsonObj.player1.stat.map(obj => {return obj.value})).range([0,width]);
       var x2 = d3.scaleLinear().domain(jsonObj.player2.stat.map(obj => {return obj.value})).range([0,width]);
 
       var keys = jsonObj.player1.stat.map(obj => {return obj.key});
-      var y = d3.scaleBand().domain(keys).range([height,0]).padding(0.1);;
-      var y2 = d3.scaleBand().domain(keys).range([height,0]).padding(0.1);;
+      var y = d3.scaleBand().domain(keys).range([height,0]).padding(0.1);
+      var y2 = d3.scaleBand().domain(keys).range([height,0]).padding(0.1);
+
 
     	x.domain([0, 100]);
       x2.domain([0, 100]);
